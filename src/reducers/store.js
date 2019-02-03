@@ -21,6 +21,10 @@ const mainReducer = (state = initialState, action) => {
     case actionTypes.FETCH_NEW_FILM_SUCCESS:
       console.log(action.payload);
       return {...state,films:action.payload.Search,loaded: true,totalResults:action.payload.totalResults};
+    case actionTypes.GET_FILM:
+      return {...state,film:action.payload};
+    case actionTypes.GET_FILM_ERROR:
+      return {...state};
     default:
       return state;
   }

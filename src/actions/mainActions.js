@@ -16,6 +16,24 @@ export const getfilmsAPI = (name,page) => async dispatch => {
     });
   }
 };
+export const getFilm = (IMDbID) => async dispatch => {
+  let id = IMDbID.substr(1);
+  console.log('IMDbID',id);
+  let url = URL + 'i=' + IMDbID.slice(1);
+  const newfilm = await axios.get(url);
+  console.log('newfilm',newfilm);
+  if (newfilm.data.Response === "True") {
+    dispatch({
+      type: mainConstanst.GET_FILM,
+      payload: newfilm.data
+    });
+  } else {
+    return dispatch({
+      type: mainConstanst.GET_FILM_ERROR,
+    });
+  }
+};
+
 
 export const searchfilms = value => {
   return {

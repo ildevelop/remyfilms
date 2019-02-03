@@ -1,6 +1,7 @@
 import React, {Fragment} from "react";
 import Loader from '../Loader/Loader';
 import './SearchPage.css'
+import {NavLink} from "react-router-dom";
 const searchPage = props => {
   const {value, films, onInputChange, loaded, total} = props;
   return (
@@ -18,10 +19,12 @@ const searchPage = props => {
         </div>
         <div className="filmList">
           {loaded ? films.map((film, index) =>
-            <div key={index} className="filmItem">
-              {film.Poster === 'N/A' ? null : <img className="filmImg" src={film.Poster} alt="film-pic"/>}
-              <p>{film.Title + "/" + film.Year}</p>
-            </div>
+            <NavLink  key={index}  to={`/${film.imdbID}`}>
+              <div className="filmItem">
+                {film.Poster === 'N/A' ? null : <img className="filmImg" src={film.Poster} alt="film-pic"/>}
+                <p>{film.Title + "/" + film.Year}</p>
+              </div>
+            </NavLink>
           ) : <Loader/>
           }
         </div>

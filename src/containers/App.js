@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {NavLink, Route, Switch} from 'react-router-dom';
 import {withRouter} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -7,6 +7,7 @@ import * as selector from './../selector'
 import * as mainActions from '../actions/mainActions';
 import Header from "../components/Header/Header";
 import SearchPage from "../components/SearchPage/SearchPage";
+import MovieItem from "../components/MovieItem/MovieItem";
 
 
 class App extends Component {
@@ -38,6 +39,7 @@ class App extends Component {
   };
 
   render() {
+    let myUrl= 'iluya';
     const {loaded, searchValue, searchedfilms,totalResults} = this.props;
     return (
       <div>
@@ -58,6 +60,15 @@ class App extends Component {
               );
             }}
           />
+          <Route
+            exact path="/:id"
+            component={MovieItem}
+            // render={() => {
+            //   return (
+            //     <div>Heelo Ilya </div>
+            //   );
+            // }}
+          />
         </Switch>
       </div>
     );
@@ -66,7 +77,6 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   loaded: selector.getLoadingStatus(state),
-  film: selector.getFilm(state),
   films: selector.getfilms(state),
   searchValue: selector.getSearchValue(state),
   totalResults:selector.getTotalResult(state),
