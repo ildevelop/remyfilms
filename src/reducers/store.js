@@ -9,7 +9,8 @@ const initialState = {
   searchedValue: "",
   loaded: true,
   errorNewFilm: false,
-  totalResults:0
+  totalResults:0,
+  currentPage:1
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -20,7 +21,7 @@ const mainReducer = (state = initialState, action) => {
       return {...state, errorNewFilm: !state.errorNewFilm,totalResults:0};
     case actionTypes.FETCH_NEW_FILM_SUCCESS:
       console.log(action.payload);
-      return {...state,films:action.payload.Search,loaded: true,totalResults:action.payload.totalResults};
+      return {...state,films:action.payload.films.Search,loaded: true,totalResults:action.payload.films.totalResults,currentPage:action.payload.page};
     case actionTypes.GET_FILM:
       return {...state,film:action.payload};
     case actionTypes.GET_FILM_ERROR:

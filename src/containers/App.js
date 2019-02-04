@@ -11,9 +11,8 @@ import MovieItem from "../components/MovieItem/MovieItem";
 
 
 class App extends Component {
-  state={
-    page:1,
-    currentPage:1
+  state = {
+    next5: false
   };
   handleSearchFilm = value => {
     this.props.searchfilms(value);
@@ -25,7 +24,7 @@ class App extends Component {
       if (this.props.searchValue.length > 2 && myFilm !== this.props.searchValue) {
         myFilm = this.props.searchValue;
         console.log('INSIDE2');
-        this.props.getfilmsAPI(this.props.searchValue,this.state.page);
+        this.props.getfilmsAPI(this.props.searchValue, this.props.currentPage);
       }
     }, 5000);
   }
@@ -34,13 +33,30 @@ class App extends Component {
     clearInterval(this.timerID);
   }
 
+  handleNext5Films = () => {
+    if (this.state.next5) {
+      this.props.getfilmsAPI(this.props.searchValue, this.props.currentPage + 1);
+      this.setState({next5: false})
+    } else {
+      this.setState({next5: !this.state.next5})
+    }
+  };
+  handlePrev5Films = () => {
+    if (this.state.next5) {
+      this.setState({next5: !this.state.next5})
+    } else {
+      if (this.props.currentPage > 1) {
+        this.props.getfilmsAPI(this.props.searchValue, this.props.currentPage - 1);
+        this.setState({next5: true})
+      }
+    }
+  };
   handleAddNewFilm = () => {
     this.props.getfilmsAPI(this.props.searchValue);
   };
 
   render() {
-    let myUrl= 'iluya';
-    const {loaded, searchValue, searchedfilms,totalResults} = this.props;
+    const {loaded, searchValue, searchedfilms, totalResults, currentPage} = this.props;
     return (
       <div>
         {/*<Header/>*/}
@@ -53,7 +69,11 @@ class App extends Component {
                   loaded={loaded}
                   films={searchedfilms}
                   value={searchValue}
+                  next={this.state.next5}
                   total={totalResults}
+                  currentPage={currentPage}
+                  handleNext5={this.handleNext5Films}
+                  handlePrev5={this.handlePrev5Films}
                   onInputChange={this.handleSearchFilm}
                   onAddNewFilm={this.handleAddNewFilm}
                 />
@@ -63,11 +83,6 @@ class App extends Component {
           <Route
             exact path="/:id"
             component={MovieItem}
-            // render={() => {
-            //   return (
-            //     <div>Heelo Ilya </div>
-            //   );
-            // }}
           />
         </Switch>
       </div>
@@ -79,8 +94,9 @@ const mapStateToProps = state => ({
   loaded: selector.getLoadingStatus(state),
   films: selector.getfilms(state),
   searchValue: selector.getSearchValue(state),
-  totalResults:selector.getTotalResult(state),
+  totalResults: selector.getTotalResult(state),
   searchedfilms: selector.getSearchedfilms(state),
+  currentPage: selector.getCurrentPage(state)
 });
 
 function mapDispatchToProps(dispatch) {

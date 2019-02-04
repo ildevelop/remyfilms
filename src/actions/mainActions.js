@@ -8,7 +8,7 @@ export const getfilmsAPI = (name,page) => async dispatch => {
   if (newfilm.data.Response === "True") {
     dispatch({
       type: mainConstanst.FETCH_NEW_FILM_SUCCESS,
-      payload: newfilm.data
+      payload: {films:newfilm.data,page}
     });
   } else {
     return dispatch({
@@ -17,11 +17,8 @@ export const getfilmsAPI = (name,page) => async dispatch => {
   }
 };
 export const getFilm = (IMDbID) => async dispatch => {
-  let id = IMDbID.substr(1);
-  console.log('IMDbID',id);
   let url = URL + 'i=' + IMDbID.slice(1);
   const newfilm = await axios.get(url);
-  console.log('newfilm',newfilm);
   if (newfilm.data.Response === "True") {
     dispatch({
       type: mainConstanst.GET_FILM,
