@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {NavLink, Route, Switch} from 'react-router-dom';
+import {Link, Route, Switch} from 'react-router-dom';
 import {withRouter} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -8,7 +8,8 @@ import * as mainActions from '../actions/mainActions';
 import Header from "../components/Header/Header";
 import SearchPage from "../components/SearchPage/SearchPage";
 import MovieItem from "../components/MovieItem/MovieItem";
-
+import createHistory from 'history/createBrowserHistory'
+const history = createHistory();
 
 class App extends Component {
   state = {
@@ -26,7 +27,7 @@ class App extends Component {
         console.log('INSIDE2');
         this.props.getfilmsAPI(this.props.searchValue, this.props.currentPage);
       }
-    }, 5000);
+    }, 4000);
   }
 
   componentWillUnmount() {
@@ -81,8 +82,26 @@ class App extends Component {
             }}
           />
           <Route
-            exact path="/:id"
+            path="/::id"
             component={MovieItem}
+          />
+          <Route
+            history={history}
+            path="/?q=::id"
+            component={() =>
+                <SearchPage
+                  loaded={loaded}
+                  films={searchedfilms}
+                  value={searchValue}
+                  next={this.state.next5}
+                  total={totalResults}
+                  currentPage={currentPage}
+                  handleNext5={this.handleNext5Films}
+                  handlePrev5={this.handlePrev5Films}
+                  onInputChange={this.handleSearchFilm}
+                  onAddNewFilm={this.handleAddNewFilm}
+                />
+            }
           />
         </Switch>
       </div>

@@ -22,3 +22,15 @@ h1 {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
 }
+/*// Scroll main*/
+   ::-webkit-scrollbar {
+     width: 10px;
+   }
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient( #1b0c1d, blueviolet);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}

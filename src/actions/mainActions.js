@@ -17,7 +17,8 @@ export const getfilmsAPI = (name,page) => async dispatch => {
   }
 };
 export const getFilm = (IMDbID) => async dispatch => {
-  let url = URL + 'i=' + IMDbID.slice(1);
+  console.log(IMDbID);
+  let url = URL + 'i=' + IMDbID.slice(2);
   const newfilm = await axios.get(url);
   if (newfilm.data.Response === "True") {
     dispatch({
